@@ -24,8 +24,9 @@ public class Game extends BaseEntity {
     @Timestamp
     public Date LastPlayedDt;
 
-    @Timestamp
-    public boolean completedAtDt;
+    public String title;
+
+    public Integer triesLeft;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

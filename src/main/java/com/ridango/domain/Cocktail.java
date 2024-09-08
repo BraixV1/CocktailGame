@@ -1,11 +1,14 @@
 package com.ridango.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cocktail extends BaseEntity {
 
 
