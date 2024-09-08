@@ -9,8 +9,6 @@ import javax.persistence.Table;
 public class Cocktail extends BaseEntity {
 
 
-    public String Name;
-
     public Integer idDrink;
 
     public String strDrink;

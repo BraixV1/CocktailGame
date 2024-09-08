@@ -1,6 +1,8 @@
 package com.ridango.domain;
 
 import jdk.jfr.Timestamp;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,6 +12,8 @@ import java.util.UUID;
 
 @Entity
 @Table
+@Getter
+@Setter
 public class Game extends BaseEntity {
 
 
@@ -38,70 +42,8 @@ public class Game extends BaseEntity {
     @OneToMany
     public List<GameCocktails> usedCocktails ;
 
+    @OneToOne
+    public Hint hint;
 
 
-
-
-
-
-
-
-
-
-
-    public Date getCreatedAtDt() {
-        return createdAtDt;
-    }
-
-    public void setCreatedAtDt(Date createdAtDt) {
-        this.createdAtDt = createdAtDt;
-    }
-
-    public Date getLastPlayedDt() {
-        return LastPlayedDt;
-    }
-
-    public void setLastPlayedDt(Date lastPlayedDt) {
-        LastPlayedDt = lastPlayedDt;
-    }
-
-    public User getPlayer() {
-        return Player;
-    }
-
-    public void setPlayer(User player) {
-        Player = player;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Cocktail getCurrentCoctail() {
-        return currentCoctail;
-    }
-
-    public void setCurrentCoctail(Cocktail currentCoctail) {
-        this.currentCoctail = currentCoctail;
-    }
-
-    public List<GameCocktails> getUsedCocktails() {
-        return usedCocktails;
-    }
-
-    public void setUsedCocktails(List<GameCocktails> usedCocktails) {
-        this.usedCocktails = usedCocktails;
-    }
-
-    public boolean isCompletedAtDt() {
-        return completedAtDt;
-    }
-
-    public void setCompletedAtDt(boolean completedAtDt) {
-        this.completedAtDt = completedAtDt;
-    }
 }

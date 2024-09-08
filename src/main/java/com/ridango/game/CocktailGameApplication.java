@@ -21,7 +21,7 @@ public class CocktailGameApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 
 		SpringApplication.run(CocktailGameApplication.class, args);
-		MainMenu.StartGame();
+		Menus.StartGame();
 	}
 
 	@Override
