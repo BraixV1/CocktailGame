@@ -44,9 +44,10 @@ public class Menu {
         }
 
         for (Map.Entry<String, MenuItem> entry : MenuItems.entrySet()) {
-            System.out.println(entry.getKey());
-            System.out.println(") ");
-            System.out.println(entry.getValue().MenuLabelFunction != null ? entry.getValue().MenuLabelFunction : entry.getValue().MenuLabel);
+            System.out.print(entry.getKey());
+            System.out.print(") ");
+            System.out.print(entry.getValue().description);
+            System.out.println();
         }
 
         if (menuLevel != EMenuLevel.First) {

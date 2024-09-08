@@ -11,7 +11,7 @@ public class MenuItem {
 
     public String MenuLabel = "";
 
-    public Function<Void, String> MenuLabelFunction;
+    public String description = "";
 
     public String ShortCut = "";
 
@@ -20,10 +20,10 @@ public class MenuItem {
     public Function<EMenuLevel, String> SubMenuToRun = null;
 
 
-    public MenuItem(String shortCut, Function<Void, String> menuLabelFunction, Function<Void, String> methodToRun) {
+    public MenuItem(String shortCut, String description, Function<Void, String> methodToRun) {
 
         this.ShortCut = shortCut;
-        this.MenuLabelFunction = menuLabelFunction;
+        this.description = description;
         this.MethodToRun = methodToRun;
 
     }
