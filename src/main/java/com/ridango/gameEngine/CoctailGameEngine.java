@@ -6,7 +6,6 @@ import com.ridango.domain.GameCocktails;
 import com.ridango.domain.Hint;
 import com.ridango.hints.HintService;
 
-import java.util.Date;
 import java.util.List;
 
 public class CoctailGameEngine {
@@ -19,15 +18,14 @@ public class CoctailGameEngine {
         this.VerifyGameIntegrity();
     }
 
-    public boolean guessCocktail(String guess) throws Exception {
+    public void guessCocktail(String guess) throws Exception {
 
         if (game.currentCocktail.strDrink.equalsIgnoreCase(guess)) {
             WinRound();
-            return true;
+            return;
         }
         game.triesLeft--;
         HintService.revealHint(game);
-        return false;
     }
 
     public int getHealth() {

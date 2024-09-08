@@ -86,7 +86,7 @@ public class HintService {
 
 
                     if (fieldValue != null && !fieldValue.isEmpty()) {
-                        availableHints.add(cocktailFieldName);
+                        availableHints.add(fieldValue);
                     }
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -140,7 +140,7 @@ public class HintService {
     }
 
     private static boolean canGetNameHint(String cocktailName, String revealedName) {
-        return getNotRevealedCharactersIndexes(revealedName).size() <= 3;
+        return getNotRevealedCharactersIndexes(revealedName).size() >= 3;
     }
 
     private static List<Integer> getNotRevealedCharactersIndexes(String revealedName) {
