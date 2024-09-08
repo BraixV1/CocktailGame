@@ -1,16 +1,73 @@
 package com.ridango.gameEngine;
 
+import com.ridango.cocktailService.CocktailService;
 import com.ridango.domain.Game;
+import com.ridango.domain.GameCocktails;
+import com.ridango.domain.Hint;
+import com.ridango.hints.HintService;
+
+import java.util.Date;
 
 public class CoctailGameEngine {
-
-
 
     private Game game;
 
 
-    public CoctailGameEngine(Game game) {
+    public CoctailGameEngine(Game game) throws Exception {
         this.game = game;
+        this.VerifyGameIntegrity();
+    }
+
+    public boolean guessCocktail(String guess) throws Exception {
+
+        if (game.currentCoctail.strDrink.equalsIgnoreCase(guess)) {
+            WinRound();
+            return true;
+        }
+        game.triesLeft--;
+        HintService.revealHint(game);
+        return false;
+    }
+
+    private void VerifyGameIntegrity() throws Exception {
+        if (game.hint == null) {
+            game.hint = new Hint();
+        }
+
+        if (game.currentCoctail == null) {
+            game.currentCoctail = CocktailService.getRandomCocktail(game.usedCocktails);
+            game.revealedName = getSecretName(game.currentCoctail.strDrink);
+        }
+
+        if (game.Player == null) {
+            throw new Exception("Game has no user");
+        }
+        if (game.score == null) {
+            game.score = 0;
+        }
+        if (game.triesLeft == null) {
+            game.triesLeft = 5;
+        }
+
+        if (game.createdAtDt == null) {
+            game.createdAtDt = new Date();
+        }
+
+    }
+
+    private String getSecretName(String name) {
+        return "_".repeat(name.length());
+    }
+
+    private void WinRound() throws Exception {
+        game.score++;
+        GameCocktails usedCocktail = new GameCocktails();
+        usedCocktail.game = game;
+        usedCocktail.coctail = game.currentCoctail;
+        game.usedCocktails.add(usedCocktail);
+        game.currentCoctail = CocktailService.getRandomCocktail(game.usedCocktails);
+        game.revealedName = getSecretName(game.currentCoctail.strDrink);
+        game.hint = new Hint();
     }
 
 

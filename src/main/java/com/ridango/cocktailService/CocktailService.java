@@ -3,16 +3,18 @@ package com.ridango.cocktailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ridango.domain.Cocktail;
+import com.ridango.domain.GameCocktails;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CocktailService {
 
     private static final String URL = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
 
 
-    public static Cocktail getRandomCocktail(ArrayList<Cocktail> used) throws Exception {
+    public static Cocktail getRandomCocktail(List<GameCocktails> used) throws Exception {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
 
@@ -30,7 +32,7 @@ public class CocktailService {
                 JsonNode drinkNode = drinksNode.get(0);
                 int id = drinkNode.get("idDrink").asInt();
 
-                isUnique = used.stream().noneMatch(cocktail1 -> cocktail1.idDrink == id);
+                isUnique = used.stream().noneMatch(gameCocktail -> gameCocktail.getCoctail().idDrink == id);
 
                 if (isUnique) {
                     cocktail = mapper.treeToValue(drinkNode, Cocktail.class);
