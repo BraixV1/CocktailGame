@@ -1,20 +1,19 @@
 package com.ridango.game;
 
-import com.ridango.cocktailService.CocktailService;
 import com.ridango.consoleUI.GameController;
-import com.ridango.domain.Cocktail;
 import com.ridango.domain.Game;
 import com.ridango.domain.User;
 import com.ridango.gameEngine.CoctailGameEngine;
+import com.ridango.menu.EMenuLevel;
 import com.ridango.menu.Menu;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.function.Function;
 
 
 @SpringBootApplication
@@ -30,25 +29,35 @@ public class CocktailGameApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) {
+	public void run(String... args) throws Exception {
 
-		Menu mainMenu = Menus.getMainMenu()
-        try {
+		Game game = new Game();
 
+		Menu mainMenu = Menus.getMainMenu(newGame(game));
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+		mainMenu.Run();
+		return;
 
 	}
 
-	public void newGame(Game game) throws Exception {
-		CoctailGameEngine gameEngine = new CoctailGameEngine(game);
+	public Function<Void, String> newGame(Game game) {
+		return (Void) -> {
+			try {
+				User user = new User();
+				Scanner scanner = new Scanner(System.in);
+				System.out.print("Enter your name: ");
+				user.setName(scanner.nextLine());
+				game.setPlayer(user);
 
-		GameController controller = new GameController(gameEngine);
-
-		controller.run();
+				CoctailGameEngine gameEngine = new CoctailGameEngine(game);
+				GameController controller = new GameController(gameEngine);
+				controller.run();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "";
+		};
 	}
+
 
 }

@@ -58,10 +58,45 @@ public class HintService {
                     hintField.setBoolean(hints, true);
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace(); // Handle exceptions appropriately
+                e.printStackTrace();
             }
         }
     }
+
+    public static List<String> getAvailableHints(Game game) {
+        List<String> availableHints = new ArrayList<>();
+        Map<String, String> fieldHintMap = getFieldHintMap();
+
+        availableHints.add(game.currentCocktail.strInstructions);
+
+        for (Map.Entry<String, String> entry : fieldHintMap.entrySet()) {
+            String cocktailFieldName = entry.getKey();
+            String hintFieldName = entry.getValue();
+
+            try {
+                Field hintField = Hint.class.getDeclaredField(hintFieldName);
+                hintField.setAccessible(true);
+
+                boolean hintUsed = hintField.getBoolean(game.getHint());
+
+                if (hintUsed) {
+                    Field cocktailField = Cocktail.class.getDeclaredField(cocktailFieldName);
+                    cocktailField.setAccessible(true);
+                    String fieldValue = (String) cocktailField.get(game.getCurrentCocktail());
+
+
+                    if (fieldValue != null && !fieldValue.isEmpty()) {
+                        availableHints.add(cocktailFieldName);
+                    }
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return availableHints;
+    }
+
 
     private static List<String> getPossibleHints(Cocktail cocktail, Hint hints) {
         List<String> possibleHints = new ArrayList<>();
@@ -86,7 +121,7 @@ public class HintService {
                     }
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace(); // Handle exceptions appropriately
+                e.printStackTrace();
             }
         }
 
@@ -100,7 +135,7 @@ public class HintService {
             hintField.setAccessible(true);
             hintField.setBoolean(hints, true);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace(); // Handle exceptions appropriately
+            e.printStackTrace();
         }
     }
 

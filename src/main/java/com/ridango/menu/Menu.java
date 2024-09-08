@@ -22,18 +22,20 @@ public class Menu {
 
     public Menu(String title, List<MenuItem> menuItems) {
         this.Title = title;
+        this.MenuItems = new HashMap<>();
         for (MenuItem menuItem : menuItems) {
-            if (ReservedShortcuts.contains(menuItem.ShortCut.toLowerCase())) {
-                throw new ApplicationContextException("Menu shortcut" + menuItem.ShortCut + "in not allowed list!");
+            if (ReservedShortcuts.contains(menuItem.getShortCut().toLowerCase())) {
+                throw new ApplicationContextException("Menu shortcut " + menuItem.getShortCut() + " is not allowed!");
             }
 
-            if (MenuItems.containsKey(menuItem.ShortCut.toLowerCase())) {
-                throw new ApplicationContextException("Menu shortcut" + menuItem.ShortCut + " is already registered!");
+            if (MenuItems.containsKey(menuItem.getShortCut().toLowerCase())) {
+                throw new ApplicationContextException("Menu shortcut " + menuItem.getShortCut() + " is already registered!");
             }
 
-            MenuItems.put(menuItem.ShortCut.toLowerCase(), menuItem);
+            MenuItems.put(menuItem.getShortCut().toLowerCase(), menuItem);
         }
     }
+
 
     private void Draw(EMenuLevel menuLevel) {
         if (Title != null) {
@@ -68,45 +70,34 @@ public class Menu {
 
     public String Run(EMenuLevel menuLevel) {
         clearConsole();
-
-        String userChoice = "";
+        String userChoice;
         Scanner scanner = new Scanner(System.in);
 
-        do{
+        do {
             Draw(menuLevel);
             userChoice = scanner.nextLine().trim();
 
-            if (getMenuItems().containsKey(userChoice)) {
-                MenuItem selectedItem = getMenuItems().get(userChoice);
-                if (selectedItem.getSubMenuToRun() != null) {
-                    String result = "";
-                    if (menuLevel == EMenuLevel.First) {
-                        result = selectedItem.getSubMenuToRun().apply(EMenuLevel.Second);
-                    }
-                    else {
-                        result = selectedItem.getSubMenuToRun().apply(EMenuLevel.Other);
-                    }
-                } else if (selectedItem.getSubMenuToRun() != null) {
-                    String result = selectedItem.getMethodToRun().toString();
+            if (MenuItems.containsKey(userChoice)) {
+                MenuItem selectedItem = MenuItems.get(userChoice);
+                if (selectedItem.getMethodToRun() != null) {
+                    String result = selectedItem.getMethodToRun().apply(null);
                     if ("x".equalsIgnoreCase(result)) {
                         userChoice = "x";
                     }
                 }
-            } else if (!ReservedShortcuts.contains(userChoice.toLowerCase())) {
+            } else {
                 System.out.println("Undefined shortcut...");
             }
 
             System.out.println();
-
-        } while (!ReservedShortcuts.contains(userChoice));
+        } while (!"x".equalsIgnoreCase(userChoice));
 
         return userChoice;
-
     }
 
 
+
     private void clearConsole() {
-        // Attempt to clear the console
         try {
             if (System.getProperty("os.name").startsWith("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();

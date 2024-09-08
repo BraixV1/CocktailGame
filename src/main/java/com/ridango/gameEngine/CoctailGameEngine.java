@@ -7,6 +7,7 @@ import com.ridango.domain.Hint;
 import com.ridango.hints.HintService;
 
 import java.util.Date;
+import java.util.List;
 
 public class CoctailGameEngine {
 
@@ -27,6 +28,18 @@ public class CoctailGameEngine {
         game.triesLeft--;
         HintService.revealHint(game);
         return false;
+    }
+
+    public int getHealth() {
+        return game.triesLeft;
+    }
+
+    public List<String> getHints(){
+        return HintService.getAvailableHints(game);
+    }
+
+    public String getSecret() {
+        return game.revealedName;
     }
 
     private void VerifyGameIntegrity() throws Exception {
