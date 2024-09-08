@@ -9,16 +9,23 @@ import java.util.function.Function;
 @Getter
 public class MenuItem {
 
-    public String MenuLabel;
+    public String MenuLabel = "";
 
     public Function<Void, String> MenuLabelFunction;
 
-    public String ShortCut;
+    public String ShortCut = "";
 
-    public Function<Void, String> MethodToRun;
+    public Function<Void, String> MethodToRun = null;
 
-    public Function<EMenuLevel, String> SubMenuToRun;
+    public Function<EMenuLevel, String> SubMenuToRun = null;
 
 
+    public MenuItem(String shortCut, Function<Void, String> menuLabelFunction, Function<Void, String> methodToRun) {
+
+        this.ShortCut = shortCut;
+        this.MenuLabelFunction = menuLabelFunction;
+        this.MethodToRun = methodToRun;
+
+    }
 }
 

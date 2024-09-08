@@ -20,8 +20,6 @@ public class Hint extends BaseEntity {
 
     public String revealedInput;
 
-    public boolean showStrInstructions = false;
-
     public boolean showStrDrinkThumb = false;
 
     public boolean showStrIngredient1 = false;

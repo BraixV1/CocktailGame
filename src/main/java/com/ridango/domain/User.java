@@ -1,13 +1,16 @@
 package com.ridango.domain;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table
+@Getter
+@Setter
 public class User extends BaseEntity {
 
     public String Name;
@@ -15,26 +18,6 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public List<Game> Games;
-
-
-
-
-
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        this.Name = name;
-    }
-
-    public Iterable<Game> getGames() {
-        return Games;
-    }
-    public void setGames(List<Game> games) {
-        this.Games = games;
-    }
 
 
 

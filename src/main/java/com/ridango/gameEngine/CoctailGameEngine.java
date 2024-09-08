@@ -20,7 +20,7 @@ public class CoctailGameEngine {
 
     public boolean guessCocktail(String guess) throws Exception {
 
-        if (game.currentCoctail.strDrink.equalsIgnoreCase(guess)) {
+        if (game.currentCocktail.strDrink.equalsIgnoreCase(guess)) {
             WinRound();
             return true;
         }
@@ -34,23 +34,13 @@ public class CoctailGameEngine {
             game.hint = new Hint();
         }
 
-        if (game.currentCoctail == null) {
-            game.currentCoctail = CocktailService.getRandomCocktail(game.usedCocktails);
-            game.revealedName = getSecretName(game.currentCoctail.strDrink);
+        if (game.currentCocktail == null) {
+            game.currentCocktail = CocktailService.getRandomCocktail(game.usedCocktails);
+            game.revealedName = getSecretName(game.currentCocktail.strDrink);
         }
 
         if (game.Player == null) {
             throw new Exception("Game has no user");
-        }
-        if (game.score == null) {
-            game.score = 0;
-        }
-        if (game.triesLeft == null) {
-            game.triesLeft = 5;
-        }
-
-        if (game.createdAtDt == null) {
-            game.createdAtDt = new Date();
         }
 
     }
@@ -63,10 +53,10 @@ public class CoctailGameEngine {
         game.score++;
         GameCocktails usedCocktail = new GameCocktails();
         usedCocktail.game = game;
-        usedCocktail.coctail = game.currentCoctail;
+        usedCocktail.coctail = game.currentCocktail;
         game.usedCocktails.add(usedCocktail);
-        game.currentCoctail = CocktailService.getRandomCocktail(game.usedCocktails);
-        game.revealedName = getSecretName(game.currentCoctail.strDrink);
+        game.currentCocktail = CocktailService.getRandomCocktail(game.usedCocktails);
+        game.revealedName = getSecretName(game.currentCocktail.strDrink);
         game.hint = new Hint();
     }
 

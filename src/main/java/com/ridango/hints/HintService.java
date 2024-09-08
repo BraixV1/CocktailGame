@@ -13,7 +13,7 @@ public class HintService {
 
     public static void revealHint(Game game) {
 
-        if (game.currentCoctail == null) {
+        if (game.currentCocktail == null) {
             System.out.println("No coctail found");
             return;
         }
@@ -22,10 +22,10 @@ public class HintService {
             return;
         }
 
-        initializeHints(game.currentCoctail, game.hint);
-        List<String> possibleHints = getPossibleHints(game.currentCoctail, game.hint);
+        initializeHints(game.currentCocktail, game.hint);
+        List<String> possibleHints = getPossibleHints(game.currentCocktail, game.hint);
 
-        if (canGetNameHint(game.currentCoctail.strDrink, game.revealedName)) {
+        if (canGetNameHint(game.currentCocktail.strDrink, game.revealedName)) {
             possibleHints.add("RevealName");
         }
 
@@ -33,7 +33,7 @@ public class HintService {
             String chosenHint = possibleHints.get(rand.nextInt(possibleHints.size()));
 
             if (chosenHint.equals("RevealName")) {
-                game.revealedName = revealLetter(game.currentCoctail.strDrink, game.revealedName);
+                game.revealedName = revealLetter(game.currentCocktail.strDrink, game.revealedName);
             } else {
                 setHintToTrue(game.hint, chosenHint);
             }
@@ -135,7 +135,6 @@ public class HintService {
     private static Map<String, String> getFieldHintMap() {
         Map<String, String> map = new HashMap<>();
         map.put("strDrinkThumb", "showStrDrinkThumb");
-        map.put("strInstructions", "showStrInstructions");
         map.put("strIngredient1", "showStrIngredient1");
         map.put("strIngredient2", "showStrIngredient2");
         map.put("strIngredient3", "showStrIngredient3");

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -16,17 +17,16 @@ import java.util.UUID;
 @Setter
 public class Game extends BaseEntity {
 
+    @Timestamp
+    public Date createdAtDt = new Date();
+
 
     @Timestamp
-    public Date createdAtDt;
+    public Date LastPlayedDt = new Date();
 
+    public String title = "";
 
-    @Timestamp
-    public Date LastPlayedDt;
-
-    public String title;
-
-    public Integer triesLeft;
+    public Integer triesLeft = 5;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -34,19 +34,16 @@ public class Game extends BaseEntity {
 
     public Integer score = 0;
 
-    public UUID CoctailId;
-
     @ManyToOne
-    public Cocktail currentCoctail = null;
+    public Cocktail currentCocktail;
 
     public String revealedName = "";
 
 
     @OneToMany
-    public List<GameCocktails> usedCocktails ;
+    public List<GameCocktails> usedCocktails = new ArrayList<>();
 
     @OneToOne
     public Hint hint;
-
 
 }
