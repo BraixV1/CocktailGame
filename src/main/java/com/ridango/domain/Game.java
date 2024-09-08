@@ -39,6 +39,8 @@ public class Game extends BaseEntity {
     @ManyToOne
     public Cocktail currentCoctail = null;
 
+    public String revealedName = "";
+
 
     @OneToMany
     public List<GameCocktails> usedCocktails ;
