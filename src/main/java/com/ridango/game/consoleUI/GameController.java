@@ -1,6 +1,6 @@
-package com.ridango.consoleUI;
+package com.ridango.game.consoleUI;
 
-import com.ridango.gameEngine.CoctailGameEngine;
+import com.ridango.game.gameEngine.CoctailGameEngine;
 
 import java.util.List;
 import java.util.Scanner;

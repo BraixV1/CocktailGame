@@ -1,7 +1,7 @@
 package com.ridango.game;
 
-import com.ridango.menu.Menu;
-import com.ridango.menu.MenuItem;
+import com.ridango.game.domain.menu.Menu;
+import com.ridango.game.domain.menu.MenuItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

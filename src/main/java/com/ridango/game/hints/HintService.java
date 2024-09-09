@@ -1,8 +1,8 @@
-package com.ridango.hints;
+package com.ridango.game.hints;
 
-import com.ridango.domain.Cocktail;
-import com.ridango.domain.Game;
-import com.ridango.domain.Hint;
+import com.ridango.game.domain.Cocktail;
+import com.ridango.game.domain.Game;
+import com.ridango.game.domain.Hint;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -13,19 +13,19 @@ public class HintService {
 
     public static void revealHint(Game game) {
 
-        if (game.currentCocktail == null) {
+        if (game.getCurrentCocktail() == null) {
             System.out.println("No coctail found");
             return;
         }
-        if (game.hint == null) {
+        if (game.getHint() == null) {
             System.out.println("No hint found");
             return;
         }
 
-        initializeHints(game.currentCocktail, game.hint);
-        List<String> possibleHints = getPossibleHints(game.currentCocktail, game.hint);
+        initializeHints(game.getCurrentCocktail(), game.getHint());
+        List<String> possibleHints = getPossibleHints(game.getCurrentCocktail(), game.getHint());
 
-        if (canGetNameHint(game.currentCocktail.strDrink, game.revealedName)) {
+        if (canGetNameHint(game.getCurrentCocktail().strDrink, game.getRevealedName())) {
             possibleHints.add("RevealName");
         }
 
@@ -33,9 +33,9 @@ public class HintService {
             String chosenHint = possibleHints.get(rand.nextInt(possibleHints.size()));
 
             if (chosenHint.equals("RevealName")) {
-                game.revealedName = revealLetter(game.currentCocktail.strDrink, game.revealedName);
+                game.setRevealedName(revealLetter(game.getCurrentCocktail().strDrink, game.getRevealedName()));
             } else {
-                setHintToTrue(game.hint, chosenHint);
+                setHintToTrue(game.getHint(), chosenHint);
             }
         }
     }
@@ -67,7 +67,7 @@ public class HintService {
         List<String> availableHints = new ArrayList<>();
         Map<String, String> fieldHintMap = getFieldHintMap();
 
-        availableHints.add(game.currentCocktail.strInstructions);
+        availableHints.add(game.getCurrentCocktail().strInstructions);
 
         for (Map.Entry<String, String> entry : fieldHintMap.entrySet()) {
             String cocktailFieldName = entry.getKey();

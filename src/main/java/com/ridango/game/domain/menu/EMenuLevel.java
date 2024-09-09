@@ -1,4 +1,4 @@
-package com.ridango.menu;
+package com.ridango.game.domain.menu;
 
 public enum EMenuLevel {
     First,

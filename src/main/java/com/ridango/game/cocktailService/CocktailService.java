@@ -1,12 +1,11 @@
-package com.ridango.cocktailService;
+package com.ridango.game.cocktailService;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ridango.domain.Cocktail;
-import com.ridango.domain.GameCocktails;
+import com.ridango.game.domain.Cocktail;
+import com.ridango.game.domain.GameCocktails;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CocktailService {
@@ -32,7 +31,7 @@ public class CocktailService {
                 JsonNode drinkNode = drinksNode.get(0);
                 int id = drinkNode.get("idDrink").asInt();
 
-                isUnique = used.stream().noneMatch(gameCocktail -> gameCocktail.getCoctail().idDrink == id);
+                isUnique = used.stream().noneMatch(gameCocktail -> gameCocktail.getCocktail().idDrink == id);
 
                 if (isUnique) {
                     cocktail = mapper.treeToValue(drinkNode, Cocktail.class);

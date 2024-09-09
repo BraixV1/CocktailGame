@@ -1,4 +1,4 @@
-package com.ridango.domain;
+package com.ridango.game.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "COCKTAIL")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Cocktail extends BaseEntity {
 

@@ -1,4 +1,4 @@
-package com.ridango.menu;
+package com.ridango.game.domain.menu;
 
 import lombok.Getter;
 import lombok.Setter;
