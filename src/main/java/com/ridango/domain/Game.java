@@ -18,14 +18,19 @@ import java.util.UUID;
 public class Game extends BaseEntity {
 
     @Timestamp
+    @Column(updatable = false, name = "createdAtDt")
     public Date createdAtDt = new Date();
 
 
     @Timestamp
+    @Column(name = "lastPlayedDt")
     public Date LastPlayedDt = new Date();
 
+
+    @Column(name = "title")
     public String title = "";
 
+    @Column(name = "triesLeft")
     public Integer triesLeft = 5;
 
     @ManyToOne
@@ -35,12 +40,13 @@ public class Game extends BaseEntity {
     public Integer score = 0;
 
     @ManyToOne
+    @JoinColumn(name = "cocktail_id")
     public Cocktail currentCocktail;
 
     public String revealedName = "";
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cocktail_id")
     public List<GameCocktails> usedCocktails = new ArrayList<>();
 
     @OneToOne

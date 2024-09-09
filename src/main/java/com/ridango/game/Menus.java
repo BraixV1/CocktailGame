@@ -13,8 +13,7 @@ public class Menus {
 
     public static Menu getMainMenu(Function<Void, String> newGameMethod) {
         return new Menu(">>>>>>>>> GUESS THE COCKTAIL <<<<<<<<<<<", new ArrayList<>(Arrays.asList(
-                new MenuItem("s",  "start new game", newGameMethod),
-                new MenuItem("x", "Exit the game", (Void) -> { System.exit(0); return ""; })
+                new MenuItem("s",  "start new game", newGameMethod)
         )));
     }
 

@@ -35,8 +35,5 @@ public class GameController {
             gameEngine.guessCocktail(guess);
         } while (gameEngine.getHealth() != 0);
 
-        System.out.println("GAME OVER");
-        System.exit(0);
-
     }
 }
