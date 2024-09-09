@@ -37,12 +37,14 @@ public class Game extends BaseEntity {
     @JoinColumn(name = "user_id")
     public User Player;
 
+    @Column(name= "score")
     public Integer score = 0;
 
     @ManyToOne
     @JoinColumn(name = "cocktail_id")
     public Cocktail currentCocktail;
 
+    @Column(name = "revealedName")
     public String revealedName = "";
 
 
@@ -50,6 +52,7 @@ public class Game extends BaseEntity {
     public List<GameCocktails> usedCocktails = new ArrayList<>();
 
     @OneToOne
+    @JoinColumn(name = "hint_id")
     public Hint hint;
 
 }

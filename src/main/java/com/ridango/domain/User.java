@@ -8,11 +8,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "USERS")
 @Getter
 @Setter
 public class User extends BaseEntity {
 
+    @Column(name= "name")
     public String Name;
 
 

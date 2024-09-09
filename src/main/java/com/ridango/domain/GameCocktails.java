@@ -1,42 +1,24 @@
 package com.ridango.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "GAME_COCKTAILS")
+@Getter
+@Setter
 public class GameCocktails extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cocktail_id")
     public Cocktail coctail;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_id")
     public Game game;
-
-
-
-
-    public Cocktail getCoctail() {
-        return coctail;
-    }
-
-    public void setCoctail(Cocktail coctail) {
-        this.coctail = coctail;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-
-
-
 
 }
