@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class CocktailService {
+public class CocktailEngine {
 
     private static final String URL = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
 

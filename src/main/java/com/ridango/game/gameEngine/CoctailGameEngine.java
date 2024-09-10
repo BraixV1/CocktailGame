@@ -1,6 +1,6 @@
 package com.ridango.game.gameEngine;
 
-import com.ridango.game.cocktailService.CocktailService;
+import com.ridango.game.cocktailService.CocktailEngine;
 import com.ridango.game.dal.services.GameService;
 import com.ridango.game.domain.Game;
 import com.ridango.game.domain.GameCocktails;
@@ -42,7 +42,7 @@ public class CoctailGameEngine {
             gameService.createGame(game);
 
         } else {
-          gameService.updateGame(game);
+          gameService.update(game);
         }
         if (game.getTriesLeft() == 0) {
             isGameOver = true;
@@ -67,7 +67,7 @@ public class CoctailGameEngine {
         }
 
         if (game.getCurrentCocktail() == null) {
-            game.setCurrentCocktail(CocktailService.getRandomCocktail(game.getUsedCocktails()));
+            game.setCurrentCocktail(CocktailEngine.getRandomCocktail(game.getUsedCocktails()));
             game.setRevealedName(getSecretName(game.getCurrentCocktail().strDrink));
         }
 
@@ -87,7 +87,7 @@ public class CoctailGameEngine {
         usedCocktail.setGame(game);
         usedCocktail.setCocktail(game.getCurrentCocktail());
         game.getUsedCocktails().add(usedCocktail);
-        game.setCurrentCocktail(CocktailService.getRandomCocktail(game.getUsedCocktails()));
+        game.setCurrentCocktail(CocktailEngine.getRandomCocktail(game.getUsedCocktails()));
         game.setRevealedName(getSecretName(game.getCurrentCocktail().strDrink));
         game.getHint().resetHint();
     }

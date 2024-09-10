@@ -1,5 +1,6 @@
 package com.ridango.game;
 
+import com.ridango.game.Menus;
 import com.ridango.game.consoleUI.GameController;
 import com.ridango.game.dal.services.*;
 import com.ridango.game.domain.Game;
@@ -14,6 +15,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.sql.DataSource;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 @SpringBootApplication
@@ -27,8 +30,8 @@ public class CocktailGameApplication implements CommandLineRunner {
 	public CocktailGameApplication(DataSource dataSource, GameService gameService, CocktailService cocktailService) {
 		this.dataSource = dataSource;
 		this.gameService = gameService;
-        this.cocktailService = cocktailService;
-    }
+		this.cocktailService = cocktailService;
+	}
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(CocktailGameApplication.class, args);
@@ -36,9 +39,12 @@ public class CocktailGameApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Menu mainMenu = Menus.getMainMenu(newGame( gameService), gameService);
-		mainMenu.Run();
-		System.exit(0);
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+		executorService.submit(() -> {
+			Menu mainMenu = Menus.getMainMenu(newGame(gameService), gameService);
+			mainMenu.Run();
+			System.exit(0); // Optionally exit the application once the game ends
+		});
 	}
 
 	public Function<Void, String> newGame(GameService gameService) {

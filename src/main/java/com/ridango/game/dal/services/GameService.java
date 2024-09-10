@@ -1,12 +1,15 @@
 package com.ridango.game.dal.services;
 
 import com.ridango.game.dal.repositories.IGameRepository;
+import com.ridango.game.domain.Cocktail;
 import com.ridango.game.domain.Game;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 
 @Service
@@ -17,6 +20,7 @@ public class GameService {
 
     @Autowired
     private CocktailService cocktailService;
+
 
     @Transactional(readOnly = true)
     public List<Game> getAllGames() {
@@ -30,32 +34,37 @@ public class GameService {
 
     @Transactional
     public Game createGame(Game game) {
-        // Ensure currentCocktail is saved
-        if (game.getCurrentCocktail() != null) {
-            cocktailService.create(game.getCurrentCocktail());
+        if (game.getCurrentCocktail() == null) {
+            throw new InputMismatchException("Game needs cocktail to be able to save");
         }
-        return gameRepository.save(game);
+        if (game.getPlayer() == null) {
+            throw new InputMismatchException("Game needs player to be able to save");
+        }
+        cocktailService.create(game.getCurrentCocktail());
+        Game gottenGame = gameRepository.save(game);
+        return gottenGame;
     }
 
     @Transactional
-    public Game updateGame(Game game) {
+    public Game update(Game game) {
         Game existingGame = gameRepository.findById(game.getId()).orElse(null);
-        if (existingGame != null) {
-            existingGame.setScore(game.getScore());
-            existingGame.setRevealedName(game.getRevealedName());
-            existingGame.setTriesLeft(game.getTriesLeft());
-
-            // Ensure currentCocktail is saved
-            if (game.getCurrentCocktail() != null) {
-                cocktailService.create(game.getCurrentCocktail());
-                existingGame.setCurrentCocktail(game.getCurrentCocktail());
-            }
-
-            existingGame.setHint(game.getHint());
-            existingGame.setUsedCocktails(game.getUsedCocktails());
-            existingGame.setLastPlayedDt(new Date());
-            return gameRepository.save(existingGame);
+        if (existingGame == null){
+            throw new InputMismatchException("Unable to update game that does not exist");
         }
-        return null;
+        existingGame.setScore(game.getScore());
+        existingGame.setRevealedName(game.getRevealedName());
+        existingGame.setTriesLeft(game.getTriesLeft());
+        if (game.getCurrentCocktail()  == null) {
+            throw new ApplicationContextException("Game needs cocktail to be able to save");
+        }
+        if (cocktailService.get(game.getCurrentCocktail().getId()) == null) {
+            Cocktail result =  cocktailService.create(game.getCurrentCocktail());
+            existingGame.setCurrentCocktail(result);
+        }
+        existingGame.setHint(game.getHint());
+        existingGame.setUsedCocktails(game.getUsedCocktails());
+        existingGame.setLastPlayedDt(new Date());
+        Game gottenGame =  gameRepository.save(existingGame);
+        return gottenGame;
     }
 }
