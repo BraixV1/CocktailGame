@@ -1,6 +1,5 @@
 package com.ridango.game.dal.services;
 
-import com.ridango.game.dal.services.CocktailService;
 import com.ridango.game.dal.repositories.IGameRepository;
 import com.ridango.game.domain.Game;
 import org.springframework.beans.factory.annotation.Autowired;

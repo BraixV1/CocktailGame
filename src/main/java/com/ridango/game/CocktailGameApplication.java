@@ -5,7 +5,7 @@ import com.ridango.game.dal.services.*;
 import com.ridango.game.domain.Game;
 import com.ridango.game.domain.User;
 import com.ridango.game.gameEngine.CoctailGameEngine;
-import com.ridango.game.domain.menu.Menu;
+import com.ridango.game.menu.Menu;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,17 +23,11 @@ public class CocktailGameApplication implements CommandLineRunner {
 	private final DataSource dataSource;
 	private final GameService gameService;
 	private final CocktailService cocktailService;
-	private final HintService hintService;
-	private final AppUserService appUserService;
-	private final GameCocktailService gameCoctailService;
 
-	public CocktailGameApplication(DataSource dataSource, GameService gameService, CocktailService cocktailService, HintService hintService, AppUserService appUserService, GameCocktailService gameCoctailService) {
+	public CocktailGameApplication(DataSource dataSource, GameService gameService, CocktailService cocktailService) {
 		this.dataSource = dataSource;
 		this.gameService = gameService;
         this.cocktailService = cocktailService;
-        this.hintService = hintService;
-        this.appUserService = appUserService;
-        this.gameCoctailService = gameCoctailService;
     }
 
 	public static void main(String[] args) {
@@ -42,14 +36,15 @@ public class CocktailGameApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Game game = new Game();
-		Menu mainMenu = Menus.getMainMenu(newGame(game, gameService));
+		Menu mainMenu = Menus.getMainMenu(newGame( gameService), gameService);
 		mainMenu.Run();
+		System.exit(0);
 	}
 
-	public Function<Void, String> newGame(Game game, GameService gameService) {
+	public Function<Void, String> newGame(GameService gameService) {
 		return (Void) -> {
 			try {
+				Game game = new Game();
 				User user = new User();
 				Scanner scanner = new Scanner(System.in);
 				System.out.print("Enter your name: ");

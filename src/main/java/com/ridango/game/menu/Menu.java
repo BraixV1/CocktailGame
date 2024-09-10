@@ -1,4 +1,4 @@
-package com.ridango.game.domain.menu;
+package com.ridango.game.menu;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,17 +10,23 @@ public class Menu {
 
     @Getter
     @Setter
-    public String Title;
+    private String Title;
 
     @Getter
     @Setter
-    public Map<String, MenuItem> MenuItems;
+    private Map<String, MenuItem> MenuItems;
 
-    private final String MenuSeparator = "===============";
-    private static HashSet<String> ReservedShortcuts = new HashSet<>() {};
+    @Getter
+    @Setter
+    private Menu parentMenu;
+
+    private EMenuLevel level;
+
+    private static final HashSet<String> ReservedShortcuts = new HashSet<>() {};
 
 
     public Menu(String title, List<MenuItem> menuItems) {
+        this.level = EMenuLevel.First;
         this.Title = title;
         this.MenuItems = new HashMap<>();
         for (MenuItem menuItem : menuItems) {
@@ -37,10 +43,31 @@ public class Menu {
     }
 
 
+    public Menu(String title, Menu parent, List<MenuItem> menuItems) {
+        this.level = EMenuLevel.Second;
+        this.Title = title;
+        this.MenuItems = new HashMap<>();
+        this.parentMenu = parent;
+        for (MenuItem menuItem : menuItems) {
+            if (ReservedShortcuts.contains(menuItem.getShortCut().toLowerCase())) {
+                throw new ApplicationContextException("Menu shortcut " + menuItem.getShortCut() + " is not allowed!");
+            }
+
+            if (MenuItems.containsKey(menuItem.getShortCut().toLowerCase())) {
+                throw new ApplicationContextException("Menu shortcut " + menuItem.getShortCut() + " is already registered!");
+            }
+
+            MenuItems.put(menuItem.getShortCut().toLowerCase(), menuItem);
+        }
+    }
+
+
+
     private void Draw(EMenuLevel menuLevel) {
+        String menuSeparator = "===============";
         if (Title != null) {
             System.out.println(Title);
-            System.out.println(MenuSeparator);
+            System.out.println(menuSeparator);
         }
 
         for (Map.Entry<String, MenuItem> entry : MenuItems.entrySet()) {
@@ -59,13 +86,12 @@ public class Menu {
 
         System.out.println("x) Exit");
 
-        System.out.println(MenuSeparator);
+        System.out.println(menuSeparator);
 
         System.out.print("Your choice: ");
     }
 
-
-    public String Run(){
+    public String Run() {
         return Run(EMenuLevel.First);
     }
 
@@ -86,7 +112,10 @@ public class Menu {
                         userChoice = "x";
                     }
                 }
-            } else {
+            } else if ("b".equalsIgnoreCase(userChoice) && menuLevel != EMenuLevel.First) {
+                this.parentMenu.Run();
+                return userChoice;
+            } else if (!"x".equalsIgnoreCase(userChoice)) {
                 System.out.println("Undefined shortcut...");
             }
 
@@ -95,8 +124,6 @@ public class Menu {
 
         return userChoice;
     }
-
-
 
     private void clearConsole() {
         try {
@@ -110,6 +137,4 @@ public class Menu {
             System.out.println("Error clearing console: " + e.getMessage());
         }
     }
-
-
 }

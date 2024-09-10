@@ -6,6 +6,7 @@ import com.ridango.game.domain.Game;
 import com.ridango.game.domain.GameCocktails;
 import com.ridango.game.domain.Hint;
 import com.ridango.game.hints.HintService;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -14,11 +15,16 @@ public class CoctailGameEngine {
     private Game game;
     private GameService gameService;
 
+    @Getter
+    private Boolean isGameOver;
+
+
 
     public CoctailGameEngine(Game game, GameService gameService) throws Exception {
         this.game = game;
         this.VerifyGameIntegrity();
         this.gameService = gameService;
+        this.isGameOver = false;
 
     }
 
@@ -31,11 +37,15 @@ public class CoctailGameEngine {
         }
         game.setTriesLeft(game.getTriesLeft() - 1);
         HintService.revealHint(game);
-        if (gameService.getGameById(game.getId()) == null) {
+        Game found = gameService.getGameById(game.getId());
+        if (found == null) {
             gameService.createGame(game);
 
         } else {
           gameService.updateGame(game);
+        }
+        if (game.getTriesLeft() == 0) {
+            isGameOver = true;
         }
     }
 

@@ -15,25 +15,27 @@ public class GameController {
     }
 
 
-
-
     public void run() throws Exception {
+        Scanner scanner = new Scanner(System.in);
 
-        do {
-            List<String> hints = gameEngine.getHints();
-            System.out.println("Tries left: " + gameEngine.getHealth());
-            for (String hint : hints) {
-                System.out.println("Hint: " + hint);
-            }
-            System.out.println("==========================");
-            System.out.println(gameEngine.getSecret());
-
-            Scanner scanner = new Scanner(System.in);
+        while (!gameEngine.getIsGameOver()) {
+            displayGameStatus();
             System.out.print("Name of the cocktail: ");
             String guess = scanner.nextLine();
-
             gameEngine.guessCocktail(guess);
-        } while (gameEngine.getHealth() != 0);
-
+        }
     }
+
+    private void displayGameStatus() {
+        
+        System.out.println("Tries left: " + gameEngine.getHealth());
+        List<String> hints = gameEngine.getHints();
+        for (String hint : hints) {
+            System.out.println("Hint: " + hint);
+        }
+        System.out.println("==========================");
+        System.out.println("RESULT: " + gameEngine.getSecret());
+        System.out.println("==========================");
+    }
+
 }
