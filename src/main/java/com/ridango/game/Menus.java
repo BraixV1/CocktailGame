@@ -21,7 +21,7 @@ public class Menus {
 
         mainMenu.setMenuItems(new HashMap<String, MenuItem>() {{
             put("s", new MenuItem("s", "start new game", newGameMethod));
-            put("l", new MenuItem("l", "show leaderboards", (Void) -> {
+            put("l", new MenuItem("l", "show leaderboard", (Void) -> {
                 Menu leaderboardsMenu = getLeaderBoardMenu(service.getAllGames(), mainMenu);
                 leaderboardsMenu.Run(EMenuLevel.Second);
                 return "";
