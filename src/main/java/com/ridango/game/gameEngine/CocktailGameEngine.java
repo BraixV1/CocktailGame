@@ -10,22 +10,25 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class CoctailGameEngine {
+public class CocktailGameEngine {
 
     private Game game;
     private GameService gameService;
+
+    @Getter
+    private Game bestGame;
 
     @Getter
     private Boolean isGameOver;
 
 
 
-    public CoctailGameEngine(Game game, GameService gameService) throws Exception {
+    public CocktailGameEngine(Game game, GameService gameService) throws Exception {
         this.game = game;
         this.VerifyGameIntegrity();
         this.gameService = gameService;
         this.isGameOver = false;
-
+        SetupBestGame();
     }
 
 
@@ -49,17 +52,6 @@ public class CoctailGameEngine {
         }
     }
 
-    public int getHealth() {
-        return game.getTriesLeft();
-    }
-
-    public List<String> getHints(){
-        return HintService.getAvailableHints(game);
-    }
-
-    public String getSecret() {
-        return game.getRevealedName();
-    }
 
     private void VerifyGameIntegrity() throws Exception {
         if (game.getHint() == null) {
@@ -68,12 +60,17 @@ public class CoctailGameEngine {
 
         if (game.getCurrentCocktail() == null) {
             game.setCurrentCocktail(CocktailEngine.getRandomCocktail(game.getUsedCocktails()));
-            game.setRevealedName(getSecretName(game.getCurrentCocktail().strDrink));
         }
+        game.setRevealedName(getSecretName(game.getCurrentCocktail().strDrink));
 
         if (game.getPlayer() == null) {
             throw new Exception("Game has no user");
         }
+
+        if (game.getPlayer().getName() == null) {
+            throw new Exception("Player does not have a name");
+        }
+
 
     }
 
@@ -92,8 +89,27 @@ public class CoctailGameEngine {
         game.getHint().resetHint();
     }
 
+    public int getHealth() {
+        return game.getTriesLeft();
+    }
 
+    public List<String> getHints(){
+        return HintService.getAvailableHints(game);
+    }
 
+    public String getSecret() {
+        return game.getRevealedName();
+    }
+
+    public int getScore() {return game.getScore();}
+
+    private void SetupBestGame() {
+        List<Game> allGames = this.gameService.getAllGames();
+        allGames.sort((game1, game2) -> game2.getScore() - game1.getScore());
+        if (allGames.size() > 0) {
+            bestGame = allGames.get(0);
+        }
+    }
 
 
 }

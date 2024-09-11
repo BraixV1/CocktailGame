@@ -15,11 +15,16 @@ import java.util.List;
 @Service
 public class GameService {
 
-    @Autowired
-    private IGameRepository gameRepository;
+    private final IGameRepository gameRepository;
+
+    private final CocktailService cocktailService;
+
 
     @Autowired
-    private CocktailService cocktailService;
+    public GameService(IGameRepository gameRepository, CocktailService cocktailService) {
+        this.gameRepository = gameRepository;
+        this.cocktailService = cocktailService;
+    }
 
 
     @Transactional(readOnly = true)

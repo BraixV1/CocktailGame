@@ -11,9 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CocktailService {
+    
+    private final ICocktailRepository cocktailRepository;
 
     @Autowired
-    private ICocktailRepository cocktailRepository;
+    public CocktailService(ICocktailRepository cocktailRepository) {
+        this.cocktailRepository = cocktailRepository;
+    }
 
     @Transactional(readOnly = true)
     public Cocktail get(Long id) {

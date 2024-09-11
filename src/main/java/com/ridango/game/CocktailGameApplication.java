@@ -1,11 +1,10 @@
 package com.ridango.game;
 
-import com.ridango.game.Menus;
 import com.ridango.game.consoleUI.GameController;
 import com.ridango.game.dal.services.*;
 import com.ridango.game.domain.Game;
 import com.ridango.game.domain.User;
-import com.ridango.game.gameEngine.CoctailGameEngine;
+import com.ridango.game.gameEngine.CocktailGameEngine;
 import com.ridango.game.menu.Menu;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
@@ -57,7 +56,7 @@ public class CocktailGameApplication implements CommandLineRunner {
 				user.setName(scanner.nextLine());
 				game.setPlayer(user);
 
-				CoctailGameEngine gameEngine = new CoctailGameEngine(game, gameService);
+				CocktailGameEngine gameEngine = new CocktailGameEngine(game, gameService);
 				GameController controller = new GameController(gameEngine);
 				controller.run();
 			} catch (Exception e) {
