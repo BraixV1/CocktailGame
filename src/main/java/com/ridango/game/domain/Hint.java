@@ -78,4 +78,8 @@ public class Hint extends BaseEntity {
         showStrIngredient14 = false;
         showStrIngredient15 = false;
     }
+
+    public boolean AllHintsRevealed() {
+        return showStrDrinkThumb && showStrIngredient1 && showStrIngredient2 && showStrIngredient3 && showStrIngredient4 && showStrIngredient5 && showStrIngredient6 && showStrIngredient7 && showStrIngredient8 && showStrIngredient9 && showStrIngredient10 && showStrIngredient11 && showStrIngredient12 && showStrIngredient13 && showStrIngredient14 && showStrIngredient15;
+    }
 }

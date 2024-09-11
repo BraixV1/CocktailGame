@@ -20,13 +20,19 @@ public class GameController {
 
         while (!gameEngine.getIsGameOver()) {
             displayGameStatus();
-            System.out.print("Name of the cocktail: ");
+            if (!gameEngine.allHintsGiven()) {
+                System.out.print("Name of the cocktail (write skip to receive hint): ");
+            }
+            else {
+                System.out.print("Name of the cocktail (No skips available): ");
+            }
             String guess = scanner.nextLine();
             gameEngine.guessCocktail(guess);
         }
     }
 
     private void displayGameStatus() {
+        System.out.println("==========================");
         if (gameEngine.getBestGame() != null) {
             System.out.println("Highest score: " + gameEngine.getBestGame().getScore());
         }

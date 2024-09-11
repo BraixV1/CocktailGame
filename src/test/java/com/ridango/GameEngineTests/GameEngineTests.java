@@ -94,7 +94,21 @@ public class GameEngineTests {
         engine.guessCocktail("Answer");
         int scoreAfter = engine.getScore();
 
-        assertEquals(scoreBefore + 1, scoreAfter, "Guessing right does not increment score by one");
+        assertEquals(scoreBefore + engine.getHealth(), scoreAfter, "Guessing right does not increment score by tries left");
+    }
+
+    @Test
+    void SkipWithoutLosingHealthCheck() throws Exception {
+        Game game = setupGame("Ridango", "Answer", 3453);
+
+        CocktailGameEngine engine = new CocktailGameEngine(game, gameService);
+        int healthBefore = engine.getHealth();
+        engine.guessCocktail("skip");
+        engine.guessCocktail("Skip");
+        engine.guessCocktail("SKiP");
+        int healthAfter = engine.getHealth();
+
+        assertEquals(healthBefore, healthAfter, "Skipping does loses health");
     }
 
     @Test

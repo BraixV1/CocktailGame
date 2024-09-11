@@ -34,12 +34,16 @@ public class CocktailGameEngine {
 
     public void guessCocktail(String guess) throws Exception {
 
-        if (game.getCurrentCocktail().strDrink.equalsIgnoreCase(guess)) {
+        if (!allHintsGiven() && guess.trim().equalsIgnoreCase("skip")) {
+            HintService.revealHint(game);
+        }
+        else if (game.getCurrentCocktail().strDrink.equalsIgnoreCase(guess.trim())) {
             WinRound();
             return;
+        } else {
+            game.setTriesLeft(game.getTriesLeft() - 1);
+            HintService.revealHint(game);
         }
-        game.setTriesLeft(game.getTriesLeft() - 1);
-        HintService.revealHint(game);
         Game found = gameService.getGameById(game.getId());
         if (found == null) {
             gameService.createGame(game);
@@ -79,7 +83,7 @@ public class CocktailGameEngine {
     }
 
     private void WinRound() throws Exception {
-        game.setScore(game.getScore() + 1);
+        game.setScore(game.getScore() + game.getTriesLeft());
         GameCocktails usedCocktail = new GameCocktails();
         usedCocktail.setGame(game);
         usedCocktail.setCocktail(game.getCurrentCocktail());
@@ -97,6 +101,17 @@ public class CocktailGameEngine {
         return HintService.getAvailableHints(game);
     }
 
+    public boolean allHintsGiven() {
+        int count = 0;
+
+        for (int i = 0; i < game.getRevealedName().length(); i++) {
+            if (game.getRevealedName().charAt(i) == '_') {
+                count++;
+            }
+        }
+        return game.getHint().AllHintsRevealed() && count <= 3;
+    }
+
     public String getSecret() {
         return game.getRevealedName();
     }
@@ -106,7 +121,7 @@ public class CocktailGameEngine {
     private void SetupBestGame() {
         List<Game> allGames = this.gameService.getAllGames();
         allGames.sort((game1, game2) -> game2.getScore() - game1.getScore());
-        if (allGames.size() > 0) {
+        if (!allGames.isEmpty()) {
             bestGame = allGames.get(0);
         }
     }

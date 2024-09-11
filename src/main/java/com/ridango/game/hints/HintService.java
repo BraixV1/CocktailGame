@@ -40,6 +40,7 @@ public class HintService {
         }
     }
 
+
     private static void initializeHints(Cocktail cocktail, Hint hints) {
         Map<String, String> fieldHintMap = getFieldHintMap();
 
